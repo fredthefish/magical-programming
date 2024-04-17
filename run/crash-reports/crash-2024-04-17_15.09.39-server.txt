@@ -1,0 +1,205 @@
+---- Minecraft Crash Report ----
+// I bet Cylons wouldn't have this problem.
+
+Time: 2024-04-17 15:09:39
+Description: Ticking entity
+
+java.lang.IllegalArgumentException: Start element (9223367638808264704) is larger than end element (-9223372036854775808)
+	at it.unimi.dsi.fastutil.longs.LongAVLTreeSet$Subset.<init>(LongAVLTreeSet.java:1080)
+	at it.unimi.dsi.fastutil.longs.LongAVLTreeSet.subSet(LongAVLTreeSet.java:1047)
+	at net.minecraft.world.entity.SectionedEntityCache.forEachInBox(SectionedEntityCache.java:57)
+	at net.minecraft.world.entity.SectionedEntityCache.forEachIntersects(SectionedEntityCache.java:122)
+	at net.minecraft.world.entity.SimpleEntityLookup.forEachIntersects(SimpleEntityLookup.java:43)
+	at net.minecraft.world.World.getOtherEntities(World.java:676)
+	at net.minecraft.entity.projectile.ProjectileEntity.shouldLeaveOwner(ProjectileEntity.java:118)
+	at net.minecraft.entity.projectile.ProjectileEntity.tick(ProjectileEntity.java:109)
+	at net.minecraft.entity.projectile.PersistentProjectileEntity.tick(PersistentProjectileEntity.java:160)
+	at net.minecraft.entity.projectile.ArrowEntity.tick(ArrowEntity.java:104)
+	at net.minecraft.server.world.ServerWorld.tickEntity(ServerWorld.java:761)
+	at net.minecraft.world.World.tickEntity(World.java:492)
+	at net.minecraft.server.world.ServerWorld.method_31420(ServerWorld.java:399)
+	at net.minecraft.world.EntityList.forEach(EntityList.java:54)
+	at net.minecraft.server.world.ServerWorld.tick(ServerWorld.java:363)
+	at net.minecraft.server.MinecraftServer.tickWorlds(MinecraftServer.java:948)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:845)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:110)
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:683)
+	at net.minecraft.server.MinecraftServer.method_29739(MinecraftServer.java:270)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Server thread
+Stacktrace:
+	at it.unimi.dsi.fastutil.longs.LongAVLTreeSet$Subset.<init>(LongAVLTreeSet.java:1080)
+	at it.unimi.dsi.fastutil.longs.LongAVLTreeSet.subSet(LongAVLTreeSet.java:1047)
+	at net.minecraft.world.entity.SectionedEntityCache.forEachInBox(SectionedEntityCache.java:57)
+	at net.minecraft.world.entity.SectionedEntityCache.forEachIntersects(SectionedEntityCache.java:122)
+	at net.minecraft.world.entity.SimpleEntityLookup.forEachIntersects(SimpleEntityLookup.java:43)
+	at net.minecraft.world.World.getOtherEntities(World.java:676)
+	at net.minecraft.entity.projectile.ProjectileEntity.shouldLeaveOwner(ProjectileEntity.java:118)
+	at net.minecraft.entity.projectile.ProjectileEntity.tick(ProjectileEntity.java:109)
+	at net.minecraft.entity.projectile.PersistentProjectileEntity.tick(PersistentProjectileEntity.java:160)
+	at net.minecraft.entity.projectile.ArrowEntity.tick(ArrowEntity.java:104)
+	at net.minecraft.server.world.ServerWorld.tickEntity(ServerWorld.java:761)
+	at net.minecraft.world.World.tickEntity(World.java:492)
+	at net.minecraft.server.world.ServerWorld.method_31420(ServerWorld.java:399)
+	at net.minecraft.world.EntityList.forEach(EntityList.java:54)
+
+-- Entity being ticked --
+Details:
+	Entity Type: minecraft:arrow (net.minecraft.entity.projectile.ArrowEntity)
+	Entity ID: 471
+	Entity Name: Arrow
+	Entity's Exact location: 121.90, 69.92, -32.38
+	Entity's Block location: World: (121,69,-33), Section: (at 9,5,15 in 7,4,-3; chunk contains blocks 112,-64,-48 to 127,319,-33), Region: (0,-1; contains chunks 0,-32 to 31,-1, blocks 0,-64,-512 to 511,319,-1)
+	Entity's Momentum: -36238183.12, -64145281.88, -67617874.09
+	Entity's Passengers: []
+	Entity's Vehicle: null
+Stacktrace:
+	at net.minecraft.world.World.tickEntity(World.java:492)
+	at net.minecraft.server.world.ServerWorld.method_31420(ServerWorld.java:399)
+	at net.minecraft.world.EntityList.forEach(EntityList.java:54)
+	at net.minecraft.server.world.ServerWorld.tick(ServerWorld.java:363)
+	at net.minecraft.server.MinecraftServer.tickWorlds(MinecraftServer.java:948)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:845)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:110)
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:683)
+	at net.minecraft.server.MinecraftServer.method_29739(MinecraftServer.java:270)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+-- Affected level --
+Details:
+	All players: 1 total; [ServerPlayerEntity['Player418'/184, l='ServerLevel[Testing]', x=121.90, y=68.30, z=-32.38]]
+	Chunk stats: 2809
+	Level dimension: minecraft:overworld
+	Level spawn location: World: (128,69,-32), Section: (at 0,5,0 in 8,4,-2; chunk contains blocks 128,-64,-32 to 143,319,-17), Region: (0,-1; contains chunks 0,-32 to 31,-1, blocks 0,-64,-512 to 511,319,-1)
+	Level time: 416622 game time, 6000 day time
+	Level name: Testing
+	Level game mode: Game mode: creative (ID 1). Hardcore: false. Cheats: true
+	Level weather: Rain time: 0 (now: false), thunder time: 0 (now: false)
+	Known server brands: fabric
+	Removed feature flags: 
+	Level was modded: true
+	Level storage version: 0x04ABD - Anvil
+	Loaded entity count: 212
+Stacktrace:
+	at net.minecraft.server.world.ServerWorld.addDetailsToCrashReport(ServerWorld.java:1681)
+	at net.minecraft.server.MinecraftServer.tickWorlds(MinecraftServer.java:951)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:845)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:110)
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:683)
+	at net.minecraft.server.MinecraftServer.method_29739(MinecraftServer.java:270)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.20.4
+	Minecraft Version ID: 1.20.4
+	Operating System: Windows 11 (amd64) version 10.0
+	Java Version: 21.0.2, Eclipse Adoptium
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Eclipse Adoptium
+	Memory: 1019851680 bytes (972 MiB) / 1832910848 bytes (1748 MiB) up to 8514437120 bytes (8120 MiB)
+	CPUs: 32
+	Processor Vendor: GenuineIntel
+	Processor Name: 13th Gen Intel(R) Core(TM) i9-13980HX
+	Identifier: Intel64 Family 6 Model 183 Stepping 1
+	Microarchitecture: unknown
+	Frequency (GHz): 2.42
+	Number of physical packages: 1
+	Number of physical CPUs: 24
+	Number of logical CPUs: 32
+	Graphics card #0 name: NVIDIA GeForce RTX 4090 Laptop GPU
+	Graphics card #0 vendor: NVIDIA (0x10de)
+	Graphics card #0 VRAM (MB): 4095.00
+	Graphics card #0 deviceId: 0x2717
+	Graphics card #0 versionInfo: DriverVersion=31.0.15.5152
+	Graphics card #1 name: Intel(R) UHD Graphics
+	Graphics card #1 vendor: Intel Corporation (0x8086)
+	Graphics card #1 VRAM (MB): 1024.00
+	Graphics card #1 deviceId: 0xa788
+	Graphics card #1 versionInfo: DriverVersion=31.0.101.4314
+	Memory slot #0 capacity (MB): 16384.00
+	Memory slot #0 clockSpeed (GHz): 5.60
+	Memory slot #0 type: Unknown
+	Memory slot #1 capacity (MB): 16384.00
+	Memory slot #1 clockSpeed (GHz): 5.60
+	Memory slot #1 type: Unknown
+	Virtual memory max (MB): 37333.02
+	Virtual memory used (MB): 28296.84
+	Swap memory total (MB): 4864.00
+	Swap memory used (MB): 95.63
+	JVM Flags: 0 total; 
+	Fabric Mods: 
+		fabric-api: Fabric API 0.97.0+1.20.4
+		fabric-api-base: Fabric API Base 0.4.37+78d798af4f
+		fabric-api-lookup-api-v1: Fabric API Lookup API (v1) 1.6.50+82b1bb3e4f
+		fabric-biome-api-v1: Fabric Biome API (v1) 13.0.17+78d798af4f
+		fabric-block-api-v1: Fabric Block API (v1) 1.0.17+3e2216cb4f
+		fabric-block-view-api-v2: Fabric BlockView API (v2) 1.0.5+78d798af4f
+		fabric-blockrenderlayer-v1: Fabric BlockRenderLayer Registration (v1) 1.1.47+78d798af4f
+		fabric-client-tags-api-v1: Fabric Client Tags 1.1.8+78d798af4f
+		fabric-command-api-v1: Fabric Command API (v1) 1.2.42+f71b366f4f
+		fabric-command-api-v2: Fabric Command API (v2) 2.2.21+78d798af4f
+		fabric-commands-v0: Fabric Commands (v0) 0.2.59+df3654b34f
+		fabric-containers-v0: Fabric Containers (v0) 0.1.87+df3654b34f
+		fabric-content-registries-v0: Fabric Content Registries (v0) 5.0.16+78d798af4f
+		fabric-convention-tags-v1: Fabric Convention Tags 1.5.11+78d798af4f
+		fabric-crash-report-info-v1: Fabric Crash Report Info (v1) 0.2.24+78d798af4f
+		fabric-data-attachment-api-v1: Fabric Data Attachment API (v1) 1.1.5+b90db5744f
+		fabric-data-generation-api-v1: Fabric Data Generation API (v1) 13.2.5+5c0133444f
+		fabric-dimensions-v1: Fabric Dimensions API (v1) 2.1.62+78d798af4f
+		fabric-entity-events-v1: Fabric Entity Events (v1) 1.6.2+09fc25014f
+		fabric-events-interaction-v0: Fabric Events Interaction (v0) 0.7.2+389931eb4f
+		fabric-events-lifecycle-v0: Fabric Events Lifecycle (v0) 0.2.75+df3654b34f
+		fabric-game-rule-api-v1: Fabric Game Rule API (v1) 1.0.47+78d798af4f
+		fabric-gametest-api-v1: Fabric Game Test API (v1) 1.3.6+85d85a934f
+		fabric-item-api-v1: Fabric Item API (v1) 2.3.0+bcdd12964f
+		fabric-item-group-api-v1: Fabric Item Group API (v1) 4.0.27+ee30b13a4f
+		fabric-key-binding-api-v1: Fabric Key Binding API (v1) 1.0.42+78d798af4f
+		fabric-keybindings-v0: Fabric Key Bindings (v0) 0.2.40+df3654b34f
+		fabric-lifecycle-events-v1: Fabric Lifecycle Events (v1) 2.3.1+a67ffb5d4f
+		fabric-loot-api-v2: Fabric Loot API (v2) 2.1.10+78d798af4f
+		fabric-message-api-v1: Fabric Message API (v1) 6.0.6+78d798af4f
+		fabric-mining-level-api-v1: Fabric Mining Level API (v1) 2.1.66+78d798af4f
+		fabric-model-loading-api-v1: Fabric Model Loading API (v1) 1.0.9+78d798af4f
+		fabric-models-v0: Fabric Models (v0) 0.4.8+9386d8a74f
+		fabric-networking-api-v1: Fabric Networking API (v1) 3.1.8+2e5ac5484f
+		fabric-object-builder-api-v1: Fabric Object Builder API (v1) 13.1.0+dba1195c4f
+		fabric-particles-v1: Fabric Particles (v1) 1.1.8+78d798af4f
+		fabric-recipe-api-v1: Fabric Recipe API (v1) 2.0.21+78d798af4f
+		fabric-registry-sync-v0: Fabric Registry Sync (v0) 4.0.20+ee30b13a4f
+		fabric-renderer-api-v1: Fabric Renderer API (v1) 3.2.5+78d798af4f
+		fabric-renderer-indigo: Fabric Renderer - Indigo 1.5.5+78d798af4f
+		fabric-renderer-registries-v1: Fabric Renderer Registries (v1) 3.2.54+df3654b34f
+		fabric-rendering-data-attachment-v1: Fabric Rendering Data Attachment (v1) 0.3.43+73761d2e4f
+		fabric-rendering-fluids-v1: Fabric Rendering Fluids (v1) 3.1.2+e761c6694f
+		fabric-rendering-v0: Fabric Rendering (v0) 1.1.57+df3654b34f
+		fabric-rendering-v1: Fabric Rendering (v1) 3.2.1+6fd945a04f
+		fabric-resource-conditions-api-v1: Fabric Resource Conditions API (v1) 2.3.15+78d798af4f
+		fabric-resource-loader-v0: Fabric Resource Loader (v0) 0.11.21+ee30b13a4f
+		fabric-screen-api-v1: Fabric Screen API (v1) 2.0.18+78d798af4f
+		fabric-screen-handler-api-v1: Fabric Screen Handler API (v1) 1.3.56+78d798af4f
+		fabric-sound-api-v1: Fabric Sound API (v1) 1.0.18+78d798af4f
+		fabric-transfer-api-v1: Fabric Transfer API (v1) 4.0.12+90f2d7b14f
+		fabric-transitive-access-wideners-v1: Fabric Transitive Access Wideners (v1) 5.0.15+78d798af4f
+		fabricloader: Fabric Loader 0.15.9
+		java: OpenJDK 64-Bit Server VM 21
+		lavender: Lavender 0.1.5+1.20.3
+		lavender-md: lavender-md 0.1.0+1.20.3
+		lavender-md-owo-ui: lavender-md-owo-ui 0.1.0+1.20.3
+		magical-programming: Magical Programming 0.2.1-1.20.4
+		minecraft: Minecraft 1.20.4
+		mixinextras: MixinExtras 0.3.5
+		owo: oÏ‰o 0.12.6+1.20.3
+	Server Running: true
+	Player Count: 1 / 8; [ServerPlayerEntity['Player418'/184, l='ServerLevel[Testing]', x=121.90, y=68.30, z=-32.38]]
+	Data Packs: vanilla, fabric, fabric-convention-tags-v1, fabric-gametest-api-v1, magical-programming
+	Enabled Feature Flags: minecraft:vanilla
+	World Generation: Stable
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'fabric'; Server brand changed to 'fabric'
+	Launched Version: Fabric
