@@ -3,3 +3,9 @@
 
 # Ignore Gradle build output directory
 build
+
+# Ignore run
+run
+
+# Ignore IntelliJ stuff
+.idea
