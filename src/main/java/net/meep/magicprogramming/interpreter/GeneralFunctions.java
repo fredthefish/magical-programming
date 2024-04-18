@@ -24,7 +24,14 @@ public class GeneralFunctions {
                         new Argument(DataType.ANY, "argument", null))));
                 if (arguments.get("argument") == null) user.sendMessage(Text.literal("null"));
                 user.sendMessage(Text.literal(arguments.get("argument").toString()));
-                expr.token.value = new Data(arguments.get("argument"));
+                expr.token.value = new Data(((Data)expr.children.get(0).token.value).getType(), arguments.get("argument"));
+                break;
+            case "cast":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.SPELL, "spell", new ArrayList<ParserTreeNode>()))));
+                List<ParserTreeNode> spell = (ArrayList<ParserTreeNode>)arguments.get("spell");
+                Interpreter.Interpret(spell, world, user);
+                expr.token.value = new Data(DataType.NULL, null);
                 break;
             default:
                 mathFunctions.TryFunctions(expr, world, user);

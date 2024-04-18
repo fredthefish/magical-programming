@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Interpreter {
     LexerParser lexerParser;
-    GeneralFunctions generalFunctions;
+    static GeneralFunctions generalFunctions;
 
     public Interpreter() {
         lexerParser = new LexerParser();
@@ -18,13 +18,17 @@ public class Interpreter {
     public void CastSpell(String spell, World world, PlayerEntity user) {
         Interpret(lexerParser.Parser(lexerParser.Lexer(spell)), world, user);
     }
-    public List<ParserTreeNode> Interpret(List<ParserTreeNode> parsed, World world, PlayerEntity user) {
+    public static List<ParserTreeNode> Interpret(List<ParserTreeNode> parsed, World world, PlayerEntity user) {
         if (parsed == null) return null;
         for (ParserTreeNode expr : parsed) {
             if (expr.token.type == TokenType.FUNCTION) {
-                expr.children = Interpret(expr.children, world, user);
                 expr.token.type = TokenType.LITERAL;
-                generalFunctions.TryFunctions(expr, world, user);
+                if (expr.token.value.equals("spell")) {
+                    expr.token.value = new Data(DataType.SPELL, expr.children);
+                } else {
+                    expr.children = Interpret(expr.children, world, user);
+                    generalFunctions.TryFunctions(expr, world, user);
+                }
                 expr.children = new ArrayList<>();
             } else {
                 if (!(expr.token.value instanceof Data)) //Data needs no interpreting.
@@ -34,13 +38,59 @@ public class Interpreter {
                         else expr.token.value = new Data(DataType.NUMBER, numValue);
                     } catch (Exception ignored) {
                         if (expr.token.value == null) expr.token.value = new Data(DataType.NULL, null);
-                        else if (expr.token.value.equals("self"))
-                            expr.token.value = new Data(DataType.ENTITY, user);
-                        else if (expr.token.value.equals("true"))
-                            expr.token.value = new Data(DataType.BOOLEAN, true);
-                        else if (expr.token.value.equals("false"))
-                            expr.token.value = new Data(DataType.BOOLEAN, true);
-                        else expr.token.value = new Data(DataType.NULL, null);
+                        switch (expr.token.value.toString()) {
+                            case "self":
+                                expr.token.value = new Data(DataType.ENTITY, user);
+                                break;
+                            case "true":
+                                expr.token.value = new Data(DataType.BOOLEAN, true);
+                                break;
+                            case "false":
+                                expr.token.value = new Data(DataType.BOOLEAN, false);
+                                break;
+                            case "null":
+                                expr.token.value = new Data(DataType.NULL, null);
+                                break;
+                            case "NUMBER":
+                                expr.token.value = new Data(DataType.TYPE, DataType.NUMBER);
+                                break;
+                            case "VECTOR":
+                                expr.token.value = new Data(DataType.TYPE, DataType.VECTOR);
+                                break;
+                            case "BOOLEAN":
+                                expr.token.value = new Data(DataType.TYPE, DataType.BOOLEAN);
+                                break;
+                            case "STRING":
+                                expr.token.value = new Data(DataType.TYPE, DataType.STRING);
+                                break;
+                            case "SPELL":
+                                expr.token.value = new Data(DataType.TYPE, DataType.SPELL);
+                                break;
+                            case "ENTITY":
+                                expr.token.value = new Data(DataType.TYPE, DataType.ENTITY);
+                                break;
+                            case "BLOCK":
+                                expr.token.value = new Data(DataType.TYPE, DataType.BLOCK);
+                                break;
+                            case "NULL":
+                                expr.token.value = new Data(DataType.TYPE, DataType.NULL);
+                                break;
+                            case "TYPE":
+                                expr.token.value = new Data(DataType.TYPE, DataType.TYPE);
+                                break;
+                            case "LIST":
+                                expr.token.value = new Data(DataType.TYPE, DataType.LIST);
+                                break;
+                            case "IDENTIFIER":
+                                expr.token.value = new Data(DataType.TYPE, DataType.IDENTIFIER);
+                                break;
+                            case "ANY":
+                                expr.token.value = new Data(DataType.TYPE, DataType.ANY);
+                                break;
+                            default:
+                                expr.token.value = new Data(DataType.IDENTIFIER, new DataIdentifier(expr.token.value.toString()));
+                                break;
+                        }
                     }
             }
         }
