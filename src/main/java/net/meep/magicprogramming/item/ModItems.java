@@ -26,7 +26,7 @@ public class ModItems {
     }
     public static final Item SPELL_BOOK = LavenderBookItem.registerForBook(
             new Identifier(MagicalProgrammingMod.MOD_ID, "spellscript"),
-            new Identifier(MagicalProgrammingMod.MOD_ID, "spellscript_book.json"),
+            new Identifier(MagicalProgrammingMod.MOD_ID, "spellscript_book"),
             new OwoItemSettings().group(WAND_GROUP).maxCount(1));
     //To add more items, just add a new variable, and add it to the entries, and add assets for it.
 

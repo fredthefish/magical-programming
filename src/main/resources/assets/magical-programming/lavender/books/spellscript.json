@@ -1,5 +1,5 @@
 {
   "dynamic_book_name": "Magical Programming",
-  "dynamic_book_model": "magical_programming:item/spellscript_book",
+  "dynamic_book_model": "magical-programming:spellscript_book",
   "texture": "lavender:textures/gui/purple_book.png"
 }

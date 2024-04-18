@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "General Functions",
+  "title": "Action Functions",
   "icon": "minecraft:tnt"
 }
 ```
