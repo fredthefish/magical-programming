@@ -1,5 +1,9 @@
 package net.meep.magicprogramming.item;
 
+import io.wispforest.lavender.book.LavenderBookItem;
+import io.wispforest.owo.itemgroup.Icon;
+import io.wispforest.owo.itemgroup.OwoItemGroup;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -12,9 +16,18 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 
 public class ModItems {
-    public static final Item WAND = registerItem("wand", new WandItem(
-            new FabricItemSettings().maxCount(1).rarity(Rarity.EPIC).fireproof()
-    ));
+    public static OwoItemGroup WAND_GROUP;
+    public static Item WAND;
+    static {
+        WAND_GROUP = OwoItemGroup.builder(
+                new Identifier(MagicalProgrammingMod.MOD_ID, "magical-programming"), () -> Icon.of(WAND)).build();
+        WAND = registerItem("wand", new WandItem(
+                new OwoItemSettings().maxCount(1).rarity(Rarity.EPIC).fireproof().group(WAND_GROUP)));
+    }
+    public static final Item SPELL_BOOK = LavenderBookItem.registerForBook(
+            new Identifier(MagicalProgrammingMod.MOD_ID, "spellscript"),
+            new Identifier(MagicalProgrammingMod.MOD_ID, "spellscript_book.json"),
+            new OwoItemSettings().group(WAND_GROUP).maxCount(1));
     //To add more items, just add a new variable, and add it to the entries, and add assets for it.
 
     public static void registerModItems() {
