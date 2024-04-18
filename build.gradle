@@ -90,4 +90,9 @@ modrinth {
 	uploadFile = remapJar
 	loaders = ['fabric']
 	gameVersions = ['1.20.4']
+	dependencies = [
+			new ModDependency('P7dR8mSH', 'required'),
+			new ModDependency('ccKDOlHs', 'required'),
+			new ModDependency('D5h9NKNI', 'required')
+	]
 }
