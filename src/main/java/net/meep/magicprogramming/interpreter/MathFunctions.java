@@ -53,6 +53,7 @@ public class MathFunctions {
                 if ((Double)arguments.get("divisor") == 0) expr.token.value = nullData;
                 else expr.token.value = new Data(DataType.NUMBER, (Double)arguments.get("dividend") / (Double)arguments.get("divisor"));
                 break;
+
             //Advanced Arithmetic
             case "modulo":
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
@@ -72,7 +73,8 @@ public class MathFunctions {
                         new Argument(DataType.NUMBER, "radicand", 1d),
                         new Argument(DataType.NUMBER, "degree", 2d))));
                 if ((Double)arguments.get("degree") == 0) expr.token.value = nullData;
-                expr.token.value = new Data(DataType.NUMBER, Math.pow((Double)arguments.get("radicand"), 1 / (Double)arguments.get("degree")));
+                expr.token.value = new Data(DataType.NUMBER,
+                        Math.pow((Double)arguments.get("radicand"), 1 / (Double)arguments.get("degree")));
                 break;
             case "log":
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
@@ -80,40 +82,44 @@ public class MathFunctions {
                         new Argument(DataType.NUMBER, "base", Math.E))));
                 if ((Double)arguments.get("base") == 0) expr.token.value = nullData;
                 if ((Double)arguments.get("antilogarithm") <= 0) expr.token.value = new Data(DataType.NULL, null);
-                expr.token.value = new Data(DataType.NUMBER, Math.pow((Double)arguments.get("radicand"), 1 / (Double)arguments.get("degree")));
+                expr.token.value = new Data(DataType.NUMBER,
+                        Math.log((Double)arguments.get("antilogarithm")) / Math.log((Double)arguments.get("base")));
                 break;
+
             //Unary Operators
             case "abs":
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
                         new Argument(DataType.NUMBER, "number", 0d))));
-                expr.token.value = Math.abs((Double)arguments.get("number"));
+                expr.token.value = new Data(DataType.NUMBER, Math.abs((Double)arguments.get("number")));
                 break;
             case "negate":
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
                         new Argument(DataType.NUMBER, "number", 0d))));
-                expr.token.value = -((Double)arguments.get("number"));
+                expr.token.value = new Data(DataType.NUMBER, -((Double)arguments.get("number")));
                 break;
             case "reciprocal":
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
                         new Argument(DataType.NUMBER, "number", 0d))));
-                expr.token.value = 1 / ((Double)arguments.get("number"));
+                expr.token.value = new Data(DataType.NUMBER, 1 / ((Double)arguments.get("number")));
                 break;
+
             //Rounders
             case "round":
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
                         new Argument(DataType.NUMBER, "number", 0d))));
-                expr.token.value = Math.round((Double)arguments.get("number"));
+                expr.token.value = new Data(DataType.NUMBER, (double)Math.round((Double)arguments.get("number")));
                 break;
             case "floor":
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
                         new Argument(DataType.NUMBER, "number", 0d))));
-                expr.token.value = Math.floor((Double)arguments.get("number"));
+                expr.token.value = new Data(DataType.NUMBER, Math.floor((Double)arguments.get("number")));
                 break;
             case "ceil":
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
                         new Argument(DataType.NUMBER, "number", 0d))));
-                expr.token.value = Math.ceil((Double)arguments.get("number"));
+                expr.token.value = new Data(DataType.NUMBER, Math.ceil((Double)arguments.get("number")));
                 break;
+
             //Constants
             case "pi":
                 expr.token.value = new Data(DataType.NUMBER, Math.PI);
@@ -125,6 +131,38 @@ public class MathFunctions {
                 expr.token.value = new Data(DataType.NUMBER, Math.E);
                 break;
 
+            //Trigonometry
+            case "sin":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.NUMBER, "number", 0d))));
+                expr.token.value = new Data(DataType.NUMBER, Math.sin((Double)arguments.get("number")));
+                break;
+            case "cos":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.NUMBER, "number", 0d))));
+                expr.token.value = new Data(DataType.NUMBER, Math.cos((Double)arguments.get("number")));
+                break;
+            case "tan":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.NUMBER, "number", 0d))));
+                expr.token.value = new Data(DataType.NUMBER, Math.tan((Double)arguments.get("number")));
+                break;
+            case "arcsin":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.NUMBER, "number", 0d))));
+                expr.token.value = new Data(DataType.NUMBER, Math.asin((Double)arguments.get("number")));
+                break;
+            case "arccos":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.NUMBER, "number", 0d))));
+                expr.token.value = new Data(DataType.NUMBER, Math.acos((Double)arguments.get("number")));
+                break;
+            case "arctan":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.NUMBER, "number", 0d))));
+                expr.token.value = new Data(DataType.NUMBER, Math.atan((Double)arguments.get("number")));
+                break;
+
             //Vectors
             case "vector": //Form vector from 3 components
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
@@ -134,12 +172,105 @@ public class MathFunctions {
                 expr.token.value = new Data(DataType.VECTOR,
                         new Vec3d((Double) arguments.get("x"), (Double) arguments.get("y"), (Double) arguments.get("z")));
                 break;
+            case "getx":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.VECTOR, "vector", 0d))));
+                expr.token.value = new Data(DataType.NUMBER, ((Vec3d)arguments.get("vector")).getX());
+                break;
+            case "gety":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.VECTOR, "vector", 0d))));
+                expr.token.value = new Data(DataType.NUMBER, ((Vec3d)arguments.get("vector")).getY());
+                break;
+            case "getz":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.VECTOR, "vector", 0d))));
+                expr.token.value = new Data(DataType.NUMBER, ((Vec3d)arguments.get("vector")).getZ());
+                break;
+            case "direction":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.VECTOR, "vector", 0d))));
+                expr.token.value = new Data(DataType.NUMBER, ((Vec3d)arguments.get("vector")).normalize());
+                break;
+            case "magnitude":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.VECTOR, "vector", 0d))));
+                expr.token.value = new Data(DataType.NUMBER, ((Vec3d)arguments.get("vector")).length());
+                break;
+            case "setx":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.VECTOR, "vector", 0d),
+                        new Argument(DataType.NUMBER, "number", 0d))));
+                Vec3d vectorSetX = ((Vec3d)arguments.get("vector"));
+                Vec3d vx = new Vec3d((Double)arguments.get("number"), vectorSetX.y, vectorSetX.z);
+                expr.token.value = new Data(DataType.NUMBER, vx);
+                break;
+            case "sety":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.VECTOR, "vector", 0d),
+                        new Argument(DataType.NUMBER, "number", 0d))));
+                Vec3d vectorSetY = ((Vec3d)arguments.get("vector"));
+                Vec3d vy = new Vec3d(vectorSetY.x, (Double)arguments.get("number"), vectorSetY.z);
+                expr.token.value = new Data(DataType.NUMBER, vy);
+                break;
+            case "setz":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.VECTOR, "vector", 0d),
+                        new Argument(DataType.NUMBER, "number", 0d))));
+                Vec3d vectorSetZ = ((Vec3d)arguments.get("vector"));
+                Vec3d vz = new Vec3d(vectorSetZ.x, vectorSetZ.y, (Double)arguments.get("number"));
+                expr.token.value = new Data(DataType.NUMBER, vz);
+                break;
+
+            //Vector operators
             case "multiplyvector": //Multiply vector by a number.
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
                         new Argument(DataType.VECTOR, "vector", new Vec3d(0, 0, 0)),
                         new Argument(DataType.NUMBER, "multiplier", 0d))));
                 expr.token.value = new Data(DataType.VECTOR,
                         ((Vec3d) arguments.get("vector")).multiply((Double) arguments.get("multiplier")));
+                break;
+            case "addvectors":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.VECTOR, "vector1", new Vec3d(0,0,0)),
+                        new Argument(DataType.VECTOR, "vector2", new Vec3d(0,0,0)))));
+                expr.token.value = new Data(DataType.VECTOR,
+                        ((Vec3d)arguments.get("vector1")).add((Vec3d)arguments.get("vector2")));
+                break;
+            case "subtractvectors":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.VECTOR, "vector1", new Vec3d(0,0,0)),
+                        new Argument(DataType.VECTOR, "vector2", new Vec3d(0,0,0)))));
+                expr.token.value = new Data(DataType.VECTOR,
+                        ((Vec3d)arguments.get("vector1")).subtract((Vec3d)arguments.get("vector2")));
+                break;
+            case "dotproduct":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.VECTOR, "vector1", new Vec3d(0,0,0)),
+                        new Argument(DataType.VECTOR, "vector2", new Vec3d(0,0,0)))));
+                expr.token.value = new Data(DataType.VECTOR,
+                        ((Vec3d)arguments.get("vector1")).dotProduct((Vec3d)arguments.get("vector2")));
+                break;
+            case "crossproduct":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.VECTOR, "vector1", new Vec3d(0,0,0)),
+                        new Argument(DataType.VECTOR, "vector2", new Vec3d(0,0,0)))));
+                expr.token.value = new Data(DataType.VECTOR,
+                        ((Vec3d)arguments.get("vector1")).crossProduct((Vec3d)arguments.get("vector2")));
+                break;
+            case "rotatevector":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.VECTOR, "vector", new Vec3d(0,0,0)),
+                        new Argument(DataType.VECTOR, "axis", new Vec3d(0,0,0)),
+                        new Argument(DataType.NUMBER, "angle", 0d))));
+                Vec3d rotatedVector = (Vec3d)arguments.get("vector");
+                rotatedVector = rotatedVector.rotateX((float)(((Vec3d)arguments.get("axis")).normalize().getX()
+                        * Math.PI / 180 * (double)arguments.get("angle")));
+                rotatedVector = rotatedVector.rotateY((float)(((Vec3d)arguments.get("axis")).normalize().getY()
+                        * Math.PI / 180 * (double)arguments.get("angle")));
+                rotatedVector = rotatedVector.rotateZ((float)(((Vec3d)arguments.get("axis")).normalize().getZ()
+                        * Math.PI / 180 * (double)arguments.get("angle")));
+                expr.token.value = new Data(DataType.VECTOR, rotatedVector);
                 break;
 
             //Miscellaneous
