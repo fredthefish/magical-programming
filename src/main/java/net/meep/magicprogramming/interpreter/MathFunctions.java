@@ -273,6 +273,98 @@ public class MathFunctions {
                 expr.token.value = new Data(DataType.VECTOR, rotatedVector);
                 break;
 
+            //Equality Operators
+            case "equals":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.ANY, "argument1", false),
+                        new Argument(DataType.ANY, "argument2", false))));
+                expr.token.value = new Data(DataType.BOOLEAN, arguments.get("argument1").equals(arguments.get("argument2")));
+                break;
+            case "notequals":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.ANY, "argument1", false),
+                        new Argument(DataType.ANY, "argument2", false))));
+                expr.token.value = new Data(DataType.BOOLEAN, !arguments.get("argument1").equals(arguments.get("argument2")));
+                break;
+            case "approxequals":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.NUMBER, "number1", 0d),
+                        new Argument(DataType.NUMBER, "number2", 0d),
+                        new Argument(DataType.NUMBER, "tolerance", 0.0001d))));
+                boolean approxEquals = Math.abs((double)arguments.get("argument1") - (double)arguments.get("argument2"))
+                        <= (double)arguments.get("tolerance");
+                expr.token.value = new Data(DataType.BOOLEAN, approxEquals);
+                break;
+            case "vectorapproxequals":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.VECTOR, "vector1", 0d),
+                        new Argument(DataType.VECTOR, "vector2", 0d),
+                        new Argument(DataType.NUMBER, "tolerance", 0.0001d))));
+                expr.token.value = new Data(DataType.BOOLEAN,
+                        ((Vec3d)arguments.get("vector1")).subtract((Vec3d)arguments.get("vector2")).length()
+                                <= (double)arguments.get("tolerance"));
+                break;
+
+            //Comparison Operators
+            case "greater":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.NUMBER, "number1", 0d),
+                        new Argument(DataType.NUMBER, "number2", 0d))));
+                expr.token.value = new Data(DataType.BOOLEAN, (double)arguments.get("number1") > (double)arguments.get("argument2"));
+                break;
+            case "lesser":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.NUMBER, "number1", 0d),
+                        new Argument(DataType.NUMBER, "number2", 0d))));
+                expr.token.value = new Data(DataType.BOOLEAN, (double)arguments.get("number1") < (double)arguments.get("argument2"));
+                break;
+            case "greaterorequal":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.NUMBER, "number1", 0d),
+                        new Argument(DataType.NUMBER, "number2", 0d))));
+                expr.token.value = new Data(DataType.BOOLEAN, (double)arguments.get("number1") >= (double)arguments.get("argument2"));
+                break;
+            case "lesserorequal":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.NUMBER, "number1", 0d),
+                        new Argument(DataType.NUMBER, "number2", 0d))));
+                expr.token.value = new Data(DataType.BOOLEAN, (double)arguments.get("number1") <= (double)arguments.get("argument2"));
+                break;
+
+            //Logic Gates
+            case "not":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
+                        new Argument(DataType.BOOLEAN, "boolean", false))));
+                expr.token.value = new Data(DataType.BOOLEAN, !(boolean)arguments.get("boolean"));
+                break;
+            case "and":
+                argumentList = new ArrayList<>();
+                for (int i = 1; i < 17; i++)
+                    argumentList.add(new Argument(DataType.BOOLEAN, "boolean"+i, true));
+                arguments = Interpreter.getArguments(expr.children, argumentList);
+                boolean andResult = true;
+                for (Object bool : arguments.values())
+                    andResult &= (boolean)bool;
+                expr.token.value = new Data(DataType.BOOLEAN, andResult);
+                break;
+            case "or":
+                argumentList = new ArrayList<>();
+                for (int i = 1; i < 17; i++)
+                    argumentList.add(new Argument(DataType.BOOLEAN, "boolean"+i, false));
+                arguments = Interpreter.getArguments(expr.children, argumentList);
+                boolean orResult = false;
+                for (Object bool : arguments.values())
+                    orResult |= (boolean)bool;
+                expr.token.value = new Data(DataType.BOOLEAN, orResult);
+                break;
+            case "xor":
+                arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
+                        new Argument(DataType.BOOLEAN, "boolean1", false),
+                        new Argument(DataType.BOOLEAN, "boolean2", false))));
+                expr.token.value = new Data(DataType.BOOLEAN,
+                        (boolean)arguments.get("boolean1") ^ (boolean)arguments.get("boolean2"));
+                break;
+
             //Miscellaneous
             case "random":
                 expr.token.value = new Data(DataType.NUMBER, Math.random());
