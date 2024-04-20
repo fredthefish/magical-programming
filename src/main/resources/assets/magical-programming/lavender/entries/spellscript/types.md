@@ -8,7 +8,7 @@ This article contains all the different types that data can be.
 
 - Number. Also known as doubles, representing any real number.
 - Vector. Three different numbers, representing position, direction, etc.
-- String. A string of characters, representing text.
+- String. A string of characters, representing text. Strings can also represent text or variable names (when defining variables).
 
 ;;;;;
 

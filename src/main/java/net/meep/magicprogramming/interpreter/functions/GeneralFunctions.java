@@ -81,7 +81,6 @@ public class GeneralFunctions {
                         new Argument(DataType.ANY, "value", new Data(DataType.NULL, null)))));
                 if (arguments.get("name") == null) { expr.token.value = new Data(DataType.NULL, null); break; }
                 String name = (String)arguments.get("name");
-                System.out.println(arguments.get("value"));
                 Data value = new Data(Data.TypeOf(arguments.get("value")), arguments.get("value"));
                 if (env.variables.containsKey(name))
                     env.variables.replace(name, value);

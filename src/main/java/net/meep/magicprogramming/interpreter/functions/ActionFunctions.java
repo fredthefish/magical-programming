@@ -27,11 +27,12 @@ public class ActionFunctions {
             case "addforce": //Adds a force to an entity.
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
                         new Argument(DataType.ENTITY, "entity", null),
-                        new Argument(DataType.VECTOR, "direction", new Vec3d(0, 0, 0)),
-                        new Argument(DataType.NUMBER, "force", 0d))));
+                        new Argument(DataType.VECTOR, "vector", new Vec3d(0, 0, 0)))));
                 if (arguments.get("entity") == null) { expr.token.value = nullData; break; }
-                Vec3d direction = ((Vec3d)arguments.get("direction")).normalize();
-                double force = (double)arguments.get("force");
+                Vec3d direction = ((Vec3d)arguments.get("vector")).normalize();
+                System.out.println(direction);
+                double force = ((Vec3d)arguments.get("vector")).length();
+                System.out.println(force);
                 if (force > 256) force = 256; //Clamp force at 256.
                 else if (force < -256) force = -256;
                 ((Entity) arguments.get("entity")).addVelocity(direction.multiply(force));
