@@ -25,18 +25,7 @@ public class GeneralFunctions {
             case "print": //Prints and returns data.
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
                         new Argument(DataType.ANY, "argument", new Data(DataType.NULL, null)))));
-                if (arguments.get("argument").getClass() == ArrayList.class) {
-                    try {
-                        //Test if it is a spell.
-                        @SuppressWarnings("unchecked")
-                        ArrayList<ParserTreeNode> newList = ((ArrayList<ParserTreeNode>) arguments.get("argument"));
-                        newList.add(new ParserTreeNode(new Token(TokenType.LITERAL, null)));
-                        newList.remove(newList.size() - 1);
-                        user.sendMessage(Text.literal("CANNOT PRINT SPELL."));
-                        expr.token.value = new Data(Data.TypeOf(arguments.get("argument")), arguments.get("argument"));
-                        break;
-                    } catch (Exception ignored) {}
-                }
+                if (arguments.get("argument") == null) {user.sendMessage(Text.literal("null")); break; }
                 user.sendMessage(Text.literal(arguments.get("argument").toString()));
                 expr.token.value = new Data(Data.TypeOf(arguments.get("argument")), arguments.get("argument"));
                 break;
@@ -48,7 +37,7 @@ public class GeneralFunctions {
             //Spells
             case "cast":
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(List.of(
-                        new Argument(DataType.STRING, "spell", new ArrayList<ParserTreeNode>()))));
+                        new Argument(DataType.STRING, "spell", ""))));
                 String spell = (String)arguments.get("spell");
                 try {
                     Interpreter.Interpret(LexerParser.Spell(spell), env, world, user, layers+1);
@@ -60,8 +49,8 @@ public class GeneralFunctions {
             case "if":
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
                         new Argument(DataType.BOOLEAN, "condition", false),
-                        new Argument(DataType.STRING, "then", new ArrayList<ParserTreeNode>()),
-                        new Argument(DataType.STRING, "else", new ArrayList<ParserTreeNode>()))));
+                        new Argument(DataType.STRING, "then", ""),
+                        new Argument(DataType.STRING, "else", ""))));
                 String thenSpell = (String) arguments.get("then");
                 String elseSpell = (String) arguments.get("else");
                 if ((boolean)arguments.get("condition"))
@@ -92,6 +81,7 @@ public class GeneralFunctions {
                         new Argument(DataType.ANY, "value", new Data(DataType.NULL, null)))));
                 if (arguments.get("name") == null) { expr.token.value = new Data(DataType.NULL, null); break; }
                 String name = (String)arguments.get("name");
+                System.out.println(arguments.get("value"));
                 Data value = new Data(Data.TypeOf(arguments.get("value")), arguments.get("value"));
                 if (env.variables.containsKey(name))
                     env.variables.replace(name, value);

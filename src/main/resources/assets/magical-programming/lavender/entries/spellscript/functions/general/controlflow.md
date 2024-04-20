@@ -13,4 +13,4 @@ ANY ternary ( BOOLEAN condition, ANY then, ANY else ). If the condition is true,
 
 ;;;;;
 
-NULL cast (STRING spell). This function casts the given spell. Don't make a spell cast itself infinitely, that won't work.
+NULL cast (STRING spell). This function casts the given spell. Don't make a spell cast itself infinitely, that won't work. The limit is 128.

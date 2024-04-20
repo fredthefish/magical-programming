@@ -19,7 +19,7 @@ public class Interpreter {
     }
     public static List<ParserTreeNode> Interpret(List<ParserTreeNode> parsed, VirtualEnvironment env, World world, PlayerEntity user, int layers) {
         if (parsed == null) return null;
-        if (layers > 64) return null;
+        if (layers > 128) return null;
         for (ParserTreeNode expr : parsed) {
             if (expr.token.type == TokenType.FUNCTION) {
                 expr.token.type = TokenType.LITERAL;
