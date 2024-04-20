@@ -15,7 +15,6 @@ This article contains all the different types that data can be.
 - Entity. An entity in the game.
 - Null. Nothing. Returned by functions if they don't work or don't have a return value.
 - Boolean. These are either true or false.
-- Identifier. Identifiers represent variable names.
 - Type. Types represent a specific data type (listed in this article).
 
 ;;;;;

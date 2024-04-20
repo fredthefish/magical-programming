@@ -27,6 +27,7 @@ public class WandScreenHandler extends ScreenHandler {
     public boolean canUse(PlayerEntity player) {
         return true;
     }
+
     public void changeText(String spell) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(syncId);

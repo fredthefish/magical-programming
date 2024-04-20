@@ -1,6 +1,7 @@
-package net.meep.magicprogramming.interpreter;
+package net.meep.magicprogramming.interpreter.functions;
 
 import net.meep.magicprogramming.interpreter.Classes.*;
+import net.meep.magicprogramming.interpreter.Interpreter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
@@ -26,12 +27,14 @@ public class ActionFunctions {
             case "addforce": //Adds a force to an entity.
                 arguments = Interpreter.getArguments(expr.children, new ArrayList<>(Arrays.asList(
                         new Argument(DataType.ENTITY, "entity", null),
-                        new Argument(DataType.VECTOR, "force", new Vec3d(0, 0, 0)))));
+                        new Argument(DataType.VECTOR, "direction", new Vec3d(0, 0, 0)),
+                        new Argument(DataType.NUMBER, "force", 0d))));
                 if (arguments.get("entity") == null) { expr.token.value = nullData; break; }
-                    Vec3d force = (Vec3d) arguments.get("force");
-                if (force.length() > 16777216) { expr.token.value = nullData; break; } //If the force is high enough to crash the game, don't use it.
-                if (force.length() > 256) force.multiply(256 / force.length()); //Clamp force at 256.
-                ((Entity) arguments.get("entity")).addVelocity((Vec3d) arguments.get("force"));
+                Vec3d direction = ((Vec3d)arguments.get("direction")).normalize();
+                double force = (double)arguments.get("force");
+                if (force > 256) force = 256; //Clamp force at 256.
+                else if (force < -256) force = -256;
+                ((Entity) arguments.get("entity")).addVelocity(direction.multiply(force));
                 ((Entity) arguments.get("entity")).velocityModified = true;
                 expr.token.value = nullData;
                 break;

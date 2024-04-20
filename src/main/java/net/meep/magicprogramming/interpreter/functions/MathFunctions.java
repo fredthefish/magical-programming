@@ -1,9 +1,10 @@
-package net.meep.magicprogramming.interpreter;
+package net.meep.magicprogramming.interpreter.functions;
 
 import net.meep.magicprogramming.interpreter.Classes.Argument;
 import net.meep.magicprogramming.interpreter.Classes.Data;
 import net.meep.magicprogramming.interpreter.Classes.DataType;
 import net.meep.magicprogramming.interpreter.Classes.ParserTreeNode;
+import net.meep.magicprogramming.interpreter.Interpreter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;

@@ -1,34 +1,30 @@
 package net.meep.magicprogramming.interpreter;
 
 import net.meep.magicprogramming.interpreter.Classes.*;
+import net.meep.magicprogramming.interpreter.functions.GeneralFunctions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 import java.util.*;
 
 public class Interpreter {
-    LexerParser lexerParser;
     static GeneralFunctions generalFunctions;
 
     public Interpreter() {
-        lexerParser = new LexerParser();
         generalFunctions = new GeneralFunctions();
     }
 
     public void CastSpell(String spell, World world, PlayerEntity user) {
-        Interpret(lexerParser.Parser(lexerParser.Lexer(spell)), world, user);
+        Interpret(LexerParser.Spell(spell), new VirtualEnvironment(), world, user, 0);
     }
-    public static List<ParserTreeNode> Interpret(List<ParserTreeNode> parsed, World world, PlayerEntity user) {
+    public static List<ParserTreeNode> Interpret(List<ParserTreeNode> parsed, VirtualEnvironment env, World world, PlayerEntity user, int layers) {
         if (parsed == null) return null;
+        if (layers > 64) return null;
         for (ParserTreeNode expr : parsed) {
             if (expr.token.type == TokenType.FUNCTION) {
                 expr.token.type = TokenType.LITERAL;
-                if (expr.token.value.equals("spell")) {
-                    expr.token.value = new Data(DataType.SPELL, expr.children);
-                } else {
-                    expr.children = Interpret(expr.children, world, user);
-                    generalFunctions.TryFunctions(expr, world, user);
-                }
+                expr.children = Interpret(expr.children, env, world, user, layers+1);
+                generalFunctions.TryFunctions(expr, env, layers, world, user);
                 expr.children = new ArrayList<>();
             } else {
                 if (!(expr.token.value instanceof Data)) //Data needs no interpreting.
@@ -63,9 +59,6 @@ public class Interpreter {
                             case "STRING":
                                 expr.token.value = new Data(DataType.TYPE, DataType.STRING);
                                 break;
-                            case "SPELL":
-                                expr.token.value = new Data(DataType.TYPE, DataType.SPELL);
-                                break;
                             case "ENTITY":
                                 expr.token.value = new Data(DataType.TYPE, DataType.ENTITY);
                                 break;
@@ -81,14 +74,13 @@ public class Interpreter {
                             case "LIST":
                                 expr.token.value = new Data(DataType.TYPE, DataType.LIST);
                                 break;
-                            case "IDENTIFIER":
-                                expr.token.value = new Data(DataType.TYPE, DataType.IDENTIFIER);
-                                break;
                             case "ANY":
                                 expr.token.value = new Data(DataType.TYPE, DataType.ANY);
                                 break;
                             default:
-                                expr.token.value = new Data(DataType.IDENTIFIER, new DataIdentifier(expr.token.value.toString()));
+                                if (env.variables.containsKey(expr.token.value.toString())) {
+                                    expr.token.value = new Data((Data)env.variables.get(expr.token.value.toString()));
+                                } else expr.token.value = new Data(DataType.NULL, null);
                                 break;
                         }
                     }

@@ -23,6 +23,7 @@ public class ModItems {
         WAND = registerItem("wand", new WandItem(
                 new OwoItemSettings().maxCount(1).rarity(Rarity.EPIC).fireproof().group(WAND_GROUP)));
     }
+    @SuppressWarnings("unused") //It has to be a variable for it to work.
     public static final Item SPELL_BOOK = LavenderBookItem.registerForBook(
             new Identifier(MagicalProgrammingMod.MOD_ID, "spellscript"),
             new Identifier(MagicalProgrammingMod.MOD_ID, "spellscript_book"),
@@ -33,6 +34,7 @@ public class ModItems {
         MagicalProgrammingMod.LOGGER.info("Registering mod items for " + MagicalProgrammingMod.MOD_ID);
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(ModItems::addItemsToCreativeTab);
     }
+    @SuppressWarnings("all") //"Actual value of name is always wand"
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(MagicalProgrammingMod.MOD_ID, name), item);
     }

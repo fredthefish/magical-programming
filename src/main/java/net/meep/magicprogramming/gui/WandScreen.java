@@ -33,6 +33,7 @@ public class WandScreen extends BaseOwoHandledScreen<FlowLayout, WandScreenHandl
         rootComponent.horizontalAlignment(HorizontalAlignment.CENTER);
         rootComponent.verticalAlignment(VerticalAlignment.CENTER);
         TextAreaComponent textField = Components.textArea(Sizing.fill(60), Sizing.fill(60));
+        textField.setMaxLength(32767); //Maximum allowed.
         rootComponent.child(textField);
         textField.setText(spell);
 

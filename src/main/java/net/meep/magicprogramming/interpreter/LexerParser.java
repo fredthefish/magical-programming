@@ -7,7 +7,7 @@ import java.util.*;
 public class LexerParser {
     public LexerParser() {}
 
-    public List<Token> Lexer(String spell) {
+    private static List<Token> Lexer(String spell) {
         StringBuilder tokenString = new StringBuilder();
         List<Token> tokens = new ArrayList<>();
         boolean isString = false;
@@ -21,10 +21,18 @@ public class LexerParser {
             } else {
                 if (isString) {
                     if (c == '"') {
-                        tokens.add(new Token(TokenType.STRING, tokenString.toString()));
-                        tokenString = new StringBuilder();
-                        isString = false;
-                    }  else tokenString.append(c);
+                        if (spell.charAt(i-1) == '\\') {
+                            tokenString.append(c);
+                        } else {
+                            tokens.add(new Token(TokenType.STRING, tokenString.toString()));
+                            tokenString = new StringBuilder();
+                            isString = false;
+                        }
+                    } else if (c == '\\') {
+                        if (spell.length() - 1 > i) {
+                            if (spell.charAt(i+1) != '"') tokenString.append(c);
+                        } else tokenString.append(c);
+                    } else tokenString.append(c);
                 } else {
                     if (!(c == ' ' || c == '\n')) {
                         if (c == '(' || c == ')' || c == ',') {
@@ -52,7 +60,7 @@ public class LexerParser {
         }
         return tokens;
     }
-    private Token addToken(String spell, int index, String tokenString) {
+    private static Token addToken(String spell, int index, String tokenString) {
         if (tokenString.isEmpty()) return null;
         String part;
         String argumentName = "";
@@ -71,7 +79,7 @@ public class LexerParser {
         token.argumentName = argumentName;
         return token;
     }
-    public List<ParserTreeNode> Parser(List<Token> tokens) {
+    private static List<ParserTreeNode> Parser(List<Token> tokens) {
         List<ParserTreeNode> parsed = new ArrayList<>();
         int layers = 0;
         for (int i = 0; i < tokens.size(); i++) {
@@ -108,5 +116,9 @@ public class LexerParser {
         //Give an error if there are no closing parenthesis or too many closing parenthesis.
         if (layers != 0) return null;
         return parsed;
+    }
+
+    public static List<ParserTreeNode> Spell(String spell) {
+        return Parser(Lexer(spell));
     }
 }
